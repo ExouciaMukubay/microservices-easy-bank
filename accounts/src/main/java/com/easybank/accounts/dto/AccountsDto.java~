@@ -1,0 +1,21 @@
+package com.easybank.accounts.dto;
+
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Data
+public class AccountsDto {
+
+    public AccountsDto() {};
+
+    private Long accountNumber;
+
+    private String accountType;
+
+    private String branchAddress;
+}

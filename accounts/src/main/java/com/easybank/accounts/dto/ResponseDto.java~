@@ -1,0 +1,15 @@
+package com.easybank.accounts.dto;
+
+import lombok.Data;
+
+@Data
+public class ResponseDto {
+
+    public ResponseDto(String statusCode, String statusMsg) {
+        this.statusCode = statusCode;
+        this.statusMsg = statusMsg;
+    }
+    private String statusCode;
+
+    private String statusMsg;
+}
