@@ -34,14 +34,15 @@ public class AccountsServiceImpl implements IAccountsService {
     @Override
     public void createAccount(CustomerDto customerDto) {
         logger.info("Inside createAccount method");
-        Customer customer = CustomerMapper.mapToCustomer(customerDto, new Customer());
         Optional<Customer> optionalCustomer = customerRepository.findByMobileNumber(customerDto.getMobileNumber());
+
         if(optionalCustomer.isPresent()) {
             throw new CustomerAlreadyExistsException("Customer already registered with given mobileNumber "
                     +customerDto.getMobileNumber());
         }
-        customer.setCreatedAt(LocalDateTime.now());
-        customer.setCreatedBy("Annonymous");
+
+        Customer customer = CustomerMapper.mapToCustomer(customerDto, new Customer());
+
         Customer savedCustomer = customerRepository.save(customer);
         accountsRepository.save(createNewAccount(savedCustomer));
         logger.info(" New Account + " + savedCustomer.getName() + " created successfully");
@@ -112,8 +113,6 @@ public class AccountsServiceImpl implements IAccountsService {
         long randomAccNumber = 1000000000L + new Random().nextInt(900000000);
 
         newAccount.setAccountNumber(randomAccNumber);
-        newAccount.setCreatedAt(LocalDateTime.now());
-        newAccount.setCreatedBy("Annonymous");
         newAccount.setAccountType(AccountsConstants.SAVINGS);
         newAccount.setBranchAddress(AccountsConstants.ADDRESS);
         return newAccount;

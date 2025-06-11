@@ -35,6 +35,12 @@ public class GlobalExceptionHandler  extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(validationErrors, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Handles global error logic inside all the controllers
+     * @param exception
+     * @param webRequest
+     * @return
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDto> handleGlobalException(Exception exception,
                                                                   WebRequest webRequest) {
@@ -59,6 +65,12 @@ public class GlobalExceptionHandler  extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponseDTO, HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Handles CustomerAlreadyExistsException
+     * @param exception
+     * @param webRequest
+     * @return
+     */
     @ExceptionHandler(CustomerAlreadyExistsException.class)
     public ResponseEntity<ErrorResponseDto> handleCustomerAlreadyExistsException(CustomerAlreadyExistsException exception,
                                                                                  WebRequest webRequest){
