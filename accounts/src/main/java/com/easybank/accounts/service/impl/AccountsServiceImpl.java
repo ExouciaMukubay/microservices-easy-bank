@@ -13,12 +13,10 @@ import com.easybank.accounts.repository.AccountsRepository;
 import com.easybank.accounts.repository.CustomerRepository;
 import com.easybank.accounts.service.IAccountsService;
 import lombok.AllArgsConstructor;
-import org.hibernate.sql.ast.tree.expression.Over;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
 

@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
-/*@ComponentScans({ @ComponentScan("com.eazybytes.accounts.controller") })
+/*@ComponentScans({ @ComponentScan("com.easybank.accounts.controller") })
 @EnableJpaRepositories("com.easybank.accounts.repository")
 @EntityScan("com.easybank.accounts.model")*/
 @EnableJpaAuditing(auditorAwareRef = "auditAwareImpl")
