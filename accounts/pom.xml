@@ -11,6 +11,7 @@
 	<groupId>com.easybank</groupId>
 	<artifactId>accounts</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>accounts</name>
 	<description>Building a bank application &quot;easy bank&quot; by using microservices architecture</description>
 	<url/>
@@ -99,7 +100,6 @@
 						<exclude>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
-							<version>1.18.38</version>
 						</exclude>
 					</excludes>
 				</configuration>
