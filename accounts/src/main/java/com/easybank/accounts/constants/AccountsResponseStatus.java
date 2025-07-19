@@ -1,2 +1,20 @@
-package com.easybank.accounts.constants;public enum AccountsResponseStatus {
+package com.easybank.accounts.constants;
+
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
+public enum AccountsResponseStatus {
+
+    CREATED("201", "Account created successfully"),
+    SUCCESS("200", "Request processed successfully"),
+    UPDATE_FAILED("417", "Update operation failed. Please try again or contact Dev team"),
+    DELETE_FAILED("417", "Delete operation failed. Please try again or contact Dev team");;
+
+    private String code;
+    private String message;
+
+    AccountsResponseStatus(String code, String message) {
+        this.code = code;
+        this.message = message;
+    }
 }

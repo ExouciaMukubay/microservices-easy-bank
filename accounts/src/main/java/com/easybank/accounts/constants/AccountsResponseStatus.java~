@@ -1,0 +1,9 @@
+package com.easybank.accounts.constants;
+
+public enum AccountsResponseStatus {
+
+    CREATED("201", "Account created successfully"),
+    SUCCESS("200", "Request processed successfully"),
+    UPDATE_FAILED("417", "Update operation failed. Please try again or contact Dev team"),
+    DELETE_FAILED("417", "Delete operation failed. Please try again or contact Dev team");
+}

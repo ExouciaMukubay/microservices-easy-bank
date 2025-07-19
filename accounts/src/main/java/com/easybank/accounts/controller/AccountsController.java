@@ -1,8 +1,6 @@
 package com.easybank.accounts.controller;
 
 
-
-import com.easybank.accounts.constants.AccountsConstants;
 import com.easybank.accounts.dto.CustomerDto;
 import com.easybank.accounts.dto.ErrorResponseDto;
 import com.easybank.accounts.dto.ResponseDto;
@@ -24,14 +22,13 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * CRUD REST APIs for Accounts in EasyBank to manage account details
- *
  */
 @Tag(
         name = "CRUD REST APIs for Accounts in Easy Bank",
         description = "CRUD REST APIs in Easy Bank to CREATE, UPDATE, FETCH AND DELETE account details"
 )
 @RestController
-@RequestMapping(path="/api", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
 @AllArgsConstructor
 @Validated
 public class AccountsController {
