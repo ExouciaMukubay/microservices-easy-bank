@@ -3,20 +3,44 @@ package com.easybank.accounts.mapper;
 
 import com.easybank.accounts.dto.AccountsDto;
 import com.easybank.accounts.entity.Accounts;
+import com.easybank.accounts.entity.Customer;
+
 
 public class AccountsMapper {
 
-    public static AccountsDto mapToAccountsDto(Accounts accounts, AccountsDto accountsDto){
-        accountsDto.setAccountNumber(accounts.getAccountNumber());
-        accountsDto.setAccountType(accounts.getAccountType());
-        accountsDto.setBranchAddress(accounts.getBranchAddress());
-        return accountsDto;
+    public static AccountsDto mapToAccountsDto(Accounts accounts) {
+        return AccountsDto.builder()
+                .accountNumber(accounts.getAccountNumber())
+                .accountType(accounts.getAccountType())
+                .balance(accounts.getBalance())
+                .customer(CustomerMapper.mapToCustomerDto(accounts.getCustomer()))
+                .build();
+
     }
 
     public static Accounts mapToAccounts(AccountsDto accountsDto, Accounts accounts) {
         accounts.setAccountNumber(accountsDto.getAccountNumber());
         accounts.setAccountType(accountsDto.getAccountType());
-        accounts.setBranchAddress(accountsDto.getBranchAddress());
+        accounts.setBalance(accountsDto.getBalance());
         return accounts;
     }
+
+    public static AccountsDto mapSingleAccountToAccountsDto(Accounts accounts) {
+        return AccountsDto.builder()
+                .accountNumber(accounts.getAccountNumber())
+                .accountType(accounts.getAccountType())
+                .balance(accounts.getBalance())
+                .build();
+    }
+
+    public static Accounts mapSingleAccountsDtoToAccounts(AccountsDto accountsDto, Customer customer) {
+        return Accounts.builder()
+                .accountNumber(accountsDto.getAccountNumber())
+                .accountType(accountsDto.getAccountType())
+                .balance(accountsDto.getBalance())
+                .customer(customer)
+                .build();
+    }
+
+
 }

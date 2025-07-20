@@ -12,12 +12,12 @@ import java.util.Optional;
 public class AudtitAwareImpl implements AuditorAware<String> {
 
     /**
-     * Returns the current auditor of the application.
+     * Returns the current logged auditor of the application.
      *
      * @return the current auditor.
      */
     @Override
     public Optional<String> getCurrentAuditor() {
-        return Optional.of("ACCOUNTS_EASYBANK:MS");
+        return Optional.of("ACCOUNTS_EASYBANK_MANAGMENT");
     }
 }

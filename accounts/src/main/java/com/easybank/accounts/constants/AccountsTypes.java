@@ -1,6 +1,6 @@
 package com.easybank.accounts.constants;
 
-public enum AccountTypes {
+public enum AccountsTypes {
     SAVINGS("Savings"),
     CHECKING("Checking"), //Girokonto
     CURRENT("Current"), // Geschäftskonto
@@ -8,7 +8,7 @@ public enum AccountTypes {
 
     private String accountType;
 
-    private AccountTypes(String accountType) {
+    private AccountsTypes(String accountType) {
         this.accountType = accountType;
     }
 

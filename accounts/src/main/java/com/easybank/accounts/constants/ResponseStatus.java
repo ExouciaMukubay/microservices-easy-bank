@@ -1,9 +1,10 @@
 package com.easybank.accounts.constants;
 
-import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-@AllArgsConstructor
-public enum AccountsResponseStatus {
+
+@Getter
+public enum ResponseStatus {
 
     CREATED("201", "Account created successfully"),
     SUCCESS("200", "Request processed successfully"),
@@ -13,7 +14,7 @@ public enum AccountsResponseStatus {
     private String code;
     private String message;
 
-    AccountsResponseStatus(String code, String message) {
+    ResponseStatus(String code, String message) {
         this.code = code;
         this.message = message;
     }

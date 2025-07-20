@@ -1,27 +1,33 @@
 package com.easybank.accounts.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 
 @Entity
 @Getter
 @Setter
-@ToString @AllArgsConstructor @NoArgsConstructor
-public class Accounts extends  BaseEntity {
+@Builder
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+public class Accounts extends BaseEntity {
 
-    @Column(name="customer_id")
-    private Long customerId;
-
-    @Column(name="account_number")
     @Id
-    private Long accountNumber;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "account_id")
+    private Long accountId;
 
-    @Column(name="account_type")
+    @Column(name = "account_number")
+    private String accountNumber; // IBAN
+
+    @Column(name = "account_type")
     private String accountType;
 
-    @Column(name="branch_address")
-    private String branchAddress;
+    @Column(name = "balance")
+    private float balance;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", insertable = false, updatable = false)
+    private Customer customer;
 }

@@ -10,8 +10,4 @@ public class CustomerAlreadyExistsException extends RuntimeException {
         super(String.format("%s already exists with the given input data %s : '%s'", ressourceName, fieldName, fieldValue));
     }
 
-    public CustomerAlreadyExistsException(String message) {
-        super(message);
-    }
-
 }

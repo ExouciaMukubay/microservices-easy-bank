@@ -11,4 +11,4 @@ LABEL "org.opencontainers.image.authors"="easybank.com"
 COPY target/accounts-0.0.1-SNAPSHOT.jar accounts-0.0.1-SNAPSHOT.jar
 
 # execute the application
-ENTRYPOINT ["java", "-Dspring.h2.console.enabled=true", "-Dspring.h2.console.settings.web-allow-others=true", "-jar", "accounts-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "accounts-0.0.1-SNAPSHOT.jar"]

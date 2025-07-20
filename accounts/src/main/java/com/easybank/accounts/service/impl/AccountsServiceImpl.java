@@ -1,126 +1,58 @@
 package com.easybank.accounts.service.impl;
 
-import com.easybank.accounts.constants.AccountTypes;
 import com.easybank.accounts.dto.AccountsDto;
-import com.easybank.accounts.dto.CustomerDto;
-import com.easybank.accounts.entity.Accounts;
-import com.easybank.accounts.entity.Customer;
-import com.easybank.accounts.exception.CustomerAlreadyExistsException;
 import com.easybank.accounts.exception.ResourceNotFoundException;
 import com.easybank.accounts.mapper.AccountsMapper;
-import com.easybank.accounts.mapper.CustomerMapper;
 import com.easybank.accounts.repository.AccountsRepository;
 import com.easybank.accounts.repository.CustomerRepository;
-import com.easybank.accounts.service.IAccountsService;
+import com.easybank.accounts.service.AccountsServiceI;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.Random;
-
 @Service
 @AllArgsConstructor
 @Slf4j
-public class AccountsServiceImpl implements IAccountsService {
-    public static final String ADDRESS = "Heidelbergerstraße 1, 10117 Berlin";
-    private AccountsRepository accountsRepository;
-    private CustomerRepository customerRepository;
+public class AccountsServiceImpl implements AccountsServiceI {
+
+    private final AccountsRepository repo;
+    private final CustomerRepository customerRepository;
 
     @Override
-    public void createAccount(CustomerDto customerDto) {
-        log.info("Inside createAccount method");
-        Optional<Customer> optionalCustomer = customerRepository.findByMobileNumber(customerDto.getMobileNumber());
+    public AccountsDto fetchAccountDetails(String accountNumber) {
+        var optionalAccount = repo.findByAccountNumber(accountNumber);
 
-        if (optionalCustomer.isPresent()) {
-            throw new CustomerAlreadyExistsException("Customer already registered with given mobileNumber "
-                    + customerDto.getMobileNumber());
+        if (!optionalAccount.isPresent()) {
+            throw new ResourceNotFoundException("Account not found", "accountNumber", accountNumber);
         }
 
-        Customer customer = CustomerMapper.mapToCustomer(customerDto, new Customer());
-
-        Customer savedCustomer = customerRepository.save(customer);
-        accountsRepository.save(createNewAccount(savedCustomer));
-        log.info(" New Account + " + savedCustomer.getName() + " created successfully");
+        return AccountsMapper.mapSingleAccountToAccountsDto(optionalAccount.get());
     }
 
     @Override
-    public CustomerDto fetchAccount(String mobileNumber) {
-        log.info("Inside fetchAccount method");
-        Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
-                () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
-        );
-        Accounts accounts = accountsRepository.findByCustomerId(customer.getCustomerId()).orElseThrow(
-                () -> new ResourceNotFoundException("Account", "customerId", customer.getCustomerId().toString())
-        );
-        CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customer, new CustomerDto());
-        customerDto.setAccountsDto(AccountsMapper.mapToAccountsDto(accounts, new AccountsDto()));
-        log.info("Account details fetched successfully");
-        return customerDto;
-    }
+    public void createAccount(AccountsDto accountsDto, Long customerAccountNumber) {
+        var customer = customerRepository.findByCustomerAccountNumber(customerAccountNumber);
 
-    @Override
-    public boolean updateAccount(CustomerDto customerDto) {
-        log.info("Inside updateAccount method");
-        boolean isUpdated = false;
-        AccountsDto accountsDto = customerDto.getAccountsDto();
-        if (accountsDto != null) {
-            Accounts accounts = accountsRepository.findById(accountsDto.getAccountNumber()).orElseThrow(
-                    () -> new ResourceNotFoundException("Account", "AccountNumber", accountsDto.getAccountNumber().toString())
-            );
-            AccountsMapper.mapToAccounts(accountsDto, accounts);
-            accounts = accountsRepository.save(accounts);
+        if (!customer.isPresent()) {
+            throw new ResourceNotFoundException("Customer not found", "customerAccountNumber", customerAccountNumber.toString());
+        } else {
 
-            Long customerId = accounts.getCustomerId();
-            Customer customer = customerRepository.findById(customerId).orElseThrow(
-                    () -> new ResourceNotFoundException("Customer", "CustomerID", customerId.toString())
-            );
-            CustomerMapper.mapToCustomer(customerDto, customer);
-            customerRepository.save(customer);
-            isUpdated = true;
-            log.info("Account details updated successfully");
+            var account = AccountsMapper.mapSingleAccountsDtoToAccounts(accountsDto, customer.get());
+            customer.get().getAccounts().add(account);
+            repo.save(account);
+            customerRepository.save(customer.get());
         }
-        return isUpdated;
+
 
     }
 
-    /**
-     * @param mobileNumber - Input Mobile Number
-     * @return boolean indicating if the delete of Account details is successful or not
-     */
 
     @Override
-    public boolean deleteAccount(String mobileNumber) {
-        Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
-                () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
-        );
-        return deletAccountHelper(customer);
-    }
+    public boolean deleteAccount(String accountNumber) {
+        if (!repo.findByAccountNumber(accountNumber).isPresent()) {
+            throw new ResourceNotFoundException("Account not found", "accountNumber", accountNumber);
+        }
 
-
-    /**
-     * Private method after creating a new customer
-     *
-     * @param customer - Customer Object
-     * @return the new account details
-     */
-    private Accounts createNewAccount(Customer customer) {
-        Accounts newAccount = new Accounts();
-        newAccount.setCustomerId(customer.getCustomerId());
-        long randomAccNumber = 1000000000L + new Random().nextInt(900000000);
-
-        newAccount.setAccountNumber(randomAccNumber);
-        newAccount.setAccountType(AccountTypes.SAVINGS.getAccountType());
-        newAccount.setBranchAddress(ADDRESS);
-        return newAccount;
-    }
-
-    private boolean deletAccountHelper(Customer customer) {
-        log.info("Inside deleteAccount method");
-        accountsRepository.deleteByCustomerId(customer.getCustomerId());
-        customerRepository.deleteById(customer.getCustomerId());
-        log.info("Account details deleted successfully");
-        return true;
+        return repo.deleteByAccountNumber(accountNumber);
     }
 }
-

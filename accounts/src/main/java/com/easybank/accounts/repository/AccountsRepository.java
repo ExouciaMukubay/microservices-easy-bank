@@ -9,11 +9,12 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface AccountsRepository extends JpaRepository<Accounts,Long> {
+public interface AccountsRepository extends JpaRepository<Accounts, Long> {
 
-    Optional<Accounts> findByCustomerId(Long customerId);
+    Optional<Accounts> findByAccountNumber(String accountNumber);
 
     @Transactional
     @Modifying
-    void deleteByCustomerId(Long customerId);
+    boolean deleteByAccountNumber(String accountNumber);
+
 }
