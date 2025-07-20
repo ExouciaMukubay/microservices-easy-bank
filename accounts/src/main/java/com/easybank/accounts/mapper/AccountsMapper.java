@@ -12,7 +12,7 @@ public class AccountsMapper {
         return AccountsDto.builder()
                 .accountNumber(accounts.getAccountNumber())
                 .accountType(accounts.getAccountType())
-                .customer(CustomerMapper.mapToCustomerDto(accounts.getCustomer()))
+                // .customer(CustomerMapper.mapToCustomerDto(accounts.getCustomer()))
                 .build();
 
     }
@@ -34,7 +34,7 @@ public class AccountsMapper {
         return Accounts.builder()
                 .accountNumber(accountsDto.getAccountNumber())
                 .accountType(accountsDto.getAccountType())
-                .customer(customer)
+                //.customer(customer)
                 .build();
     }
 

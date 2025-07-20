@@ -1,4 +1,0 @@
-package com.easybank.loans.audit;
-
-public class AuditAwareImpl {
-}

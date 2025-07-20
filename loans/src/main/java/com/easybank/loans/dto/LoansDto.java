@@ -5,29 +5,28 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
 @Schema(name = "Loans",
         description = "Schema to hold Loan information"
 )
 @Data
+@Builder
 public class LoansDto {
 
-    @NotEmpty(message = "Mobile Number can not be a null or empty")
-    @Pattern(regexp="(^$|[0-9]{10})",message = "Mobile Number must be 10 digits")
-    @Schema(
-            description = "Mobile Number of Customer", example = "4365327698"
-    )
-    private String mobileNumber;
+
+    private String accountNumber;
+
+    private Long customerAccountNumber;
 
     @NotEmpty(message = "Loan Number can not be a null or empty")
-    @Pattern(regexp="(^$|[0-9]{12})",message = "LoanNumber must be 12 digits")
+    @Pattern(regexp = "(^$|[0-9]{12})", message = "LoanNumber must be 12 digits")
     @Schema(
             description = "Loan Number of the customer", example = "548732457654"
     )
     private String loanNumber;
 
-    @NotEmpty(message = "LoanType can not be a null or empty")
     @Schema(
             description = "Type of the loan", example = "Home Loan"
     )

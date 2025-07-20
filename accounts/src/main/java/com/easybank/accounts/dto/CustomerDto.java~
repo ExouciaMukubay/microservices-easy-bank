@@ -52,7 +52,7 @@ public class CustomerDto {
     private String customerType;
 
     @Schema(
-            description = "Address of the customer", example = "Heidelbergerstraße 1, 10117 Berlin"
+            description = "Address of the customer", example = "Heidelbergerstraße 1, 10117 Belrin"
     )
     @NotEmpty(message = "Address can not be a null or empty")
     private String address;

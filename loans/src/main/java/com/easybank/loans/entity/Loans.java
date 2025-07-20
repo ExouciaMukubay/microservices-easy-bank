@@ -4,23 +4,38 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Getter @Setter @ToString @AllArgsConstructor @NoArgsConstructor
+@Builder
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class Loans extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long loanId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "loan_id")
+    private Long loanId;
 
-	private String mobileNumber;
+    @Column(name = "loan_number")
+    private String loanNumber;
 
-	private String loanNumber;
+    @Column(name = "account_number")
+    private String accountNumber;
 
-	private String loanType;
+    @Column(name = "customer_account_number")
+    private Long customerAccountNumber;
 
-	private int totalLoan;
+    @Column(name = "loan_type")
+    private String loanType;
 
-	private int amountPaid;
+    @Column(name = "total_loan")
+    private int totalLoan;
 
-	private int outstandingAmount;
-	
+    @Column(name = "amount_paid")
+    private int amountPaid;
+
+    @Column(name = "outstanding_amount")
+    private int outstandingAmount;
+
 }

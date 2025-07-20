@@ -28,5 +28,5 @@ public class AccountsDto {
     )
     private String accountType;
 
-    private CustomerDto customer;
+    //private CustomerDto customer;
 }
