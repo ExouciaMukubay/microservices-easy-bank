@@ -18,6 +18,6 @@ public class AudtitAwareImpl implements AuditorAware<String> {
      */
     @Override
     public Optional<String> getCurrentAuditor() {
-        return Optional.of("ACCOUNTS_EASYBANK_MANAGMENT");
+        return Optional.of("ACCOUNTS_EASYBANK_MANAGEMENT");
     }
 }

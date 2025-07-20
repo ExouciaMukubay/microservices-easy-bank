@@ -36,11 +36,11 @@ public class CardsMapper {
             cards.setTotalLimit(cardsDto.getTotalLimit());
         }
 
-        if (cards.getAvailableAmount() != cardsDto.getAvailableAmount()) {
+        if(cards.getAvailableAmount() != cardsDto.getAvailableAmount()) {
             cards.setAvailableAmount(cardsDto.getAvailableAmount());
         }
 
-        if (cards.getAmountUsed() != cardsDto.getAmountUsed()) {
+        if(cards.getAmountUsed() != cardsDto.getAmountUsed()) {
             cards.setAmountUsed(cardsDto.getAmountUsed());
         }
     }

@@ -11,10 +11,10 @@ import java.util.Optional;
 @Repository
 public interface AccountsRepository extends JpaRepository<Accounts, Long> {
 
-    Optional<Accounts> findByAccountNumber(String accountNumber);
+    Optional<Accounts> findByAccountNumber(Long accountNumber);
 
     @Transactional
     @Modifying
-    boolean deleteByAccountNumber(String accountNumber);
+    boolean deleteByAccountNumber(Long accountNumber);
 
 }

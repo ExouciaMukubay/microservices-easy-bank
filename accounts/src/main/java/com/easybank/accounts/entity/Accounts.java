@@ -19,13 +19,11 @@ public class Accounts extends BaseEntity {
     private Long accountId;
 
     @Column(name = "account_number")
-    private String accountNumber; // IBAN
+    private Long accountNumber; // Kontonummer
 
     @Column(name = "account_type")
     private String accountType;
 
-    @Column(name = "balance")
-    private float balance;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", insertable = false, updatable = false)

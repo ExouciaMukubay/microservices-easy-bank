@@ -11,9 +11,9 @@ public interface AccountsServiceI {
      * @param accountNumber
      * @return account details
      */
-    AccountsDto fetchAccountDetails(String accountNumber);
+    AccountsDto fetchAccountDetails(Long accountNumber);
 
     void createAccount(AccountsDto accountsDto, Long customerAccountNumber);
 
-    boolean deleteAccount(String accountNumber);
+    boolean deleteAccount(Long accountNumber);
 }

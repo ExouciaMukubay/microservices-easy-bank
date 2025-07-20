@@ -12,7 +12,6 @@ public class AccountsMapper {
         return AccountsDto.builder()
                 .accountNumber(accounts.getAccountNumber())
                 .accountType(accounts.getAccountType())
-                .balance(accounts.getBalance())
                 .customer(CustomerMapper.mapToCustomerDto(accounts.getCustomer()))
                 .build();
 
@@ -21,7 +20,6 @@ public class AccountsMapper {
     public static Accounts mapToAccounts(AccountsDto accountsDto, Accounts accounts) {
         accounts.setAccountNumber(accountsDto.getAccountNumber());
         accounts.setAccountType(accountsDto.getAccountType());
-        accounts.setBalance(accountsDto.getBalance());
         return accounts;
     }
 
@@ -29,7 +27,6 @@ public class AccountsMapper {
         return AccountsDto.builder()
                 .accountNumber(accounts.getAccountNumber())
                 .accountType(accounts.getAccountType())
-                .balance(accounts.getBalance())
                 .build();
     }
 
@@ -37,7 +34,6 @@ public class AccountsMapper {
         return Accounts.builder()
                 .accountNumber(accountsDto.getAccountNumber())
                 .accountType(accountsDto.getAccountType())
-                .balance(accountsDto.getBalance())
                 .customer(customer)
                 .build();
     }

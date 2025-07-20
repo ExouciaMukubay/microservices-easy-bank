@@ -19,11 +19,11 @@ public class AccountsServiceImpl implements AccountsServiceI {
     private final CustomerRepository customerRepository;
 
     @Override
-    public AccountsDto fetchAccountDetails(String accountNumber) {
+    public AccountsDto fetchAccountDetails(Long accountNumber) {
         var optionalAccount = repo.findByAccountNumber(accountNumber);
 
         if (!optionalAccount.isPresent()) {
-            throw new ResourceNotFoundException("Account not found", "accountNumber", accountNumber);
+            throw new ResourceNotFoundException("Account not found", "accountNumber", accountNumber.toString());
         }
 
         return AccountsMapper.mapSingleAccountToAccountsDto(optionalAccount.get());
@@ -42,15 +42,12 @@ public class AccountsServiceImpl implements AccountsServiceI {
             repo.save(account);
             customerRepository.save(customer.get());
         }
-
-
     }
 
-
     @Override
-    public boolean deleteAccount(String accountNumber) {
+    public boolean deleteAccount(Long accountNumber) {
         if (!repo.findByAccountNumber(accountNumber).isPresent()) {
-            throw new ResourceNotFoundException("Account not found", "accountNumber", accountNumber);
+            throw new ResourceNotFoundException("Account not found", "accountNumber", accountNumber.toString());
         }
 
         return repo.deleteByAccountNumber(accountNumber);

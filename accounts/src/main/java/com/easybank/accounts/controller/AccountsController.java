@@ -60,7 +60,7 @@ public class AccountsController {
     public ResponseEntity<AccountsDto> fetchAccountsDetails(@RequestParam
                                                             @Pattern(regexp = "(^$|[0-9]{10})", message = "Account " +
                                                                     "number must be 10 digits")
-                                                            String accountNumber) {
+                                                            Long accountNumber) {
         var accountsDto = accountsServiceI.fetchAccountDetails(accountNumber);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(accountsDto);

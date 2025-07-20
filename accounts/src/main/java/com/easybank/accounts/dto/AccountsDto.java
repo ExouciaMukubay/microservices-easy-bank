@@ -18,20 +18,15 @@ public class AccountsDto {
     @NotEmpty(message = "AccountNumber can not be a null or empty")
     @Pattern(regexp = "(^$|[0-9]{10})", message = "AccountNumber must be 10 digits")
     @Schema(
-            description = "Account Number of Easy Bank account", example = "DEA1234567"
+            description = "Account Number of Easy Bank account", example = "1234567890"
     )
-    private String accountNumber;
+    private Long accountNumber;
 
     @NotEmpty(message = "AccountType can not be a null or empty")
     @Schema(
             description = "Account type of Easy Bank account", example = "Savings"
     )
     private String accountType;
-
-    @Schema(
-            description = "Balance of customer account", example = "100.00"
-    )
-    private float balance;
 
     private CustomerDto customer;
 }
