@@ -57,8 +57,5 @@ public class CustomerDto {
     @NotEmpty(message = "Address can not be a null or empty")
     private String address;
 
-    @Schema(
-            description = "Account(s) details of the Customer"
-    )
     private List<AccountsDto> accountsDto;
 }

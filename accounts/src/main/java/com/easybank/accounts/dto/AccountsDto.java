@@ -2,7 +2,6 @@ package com.easybank.accounts.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,8 +14,6 @@ import lombok.Data;
 )
 public class AccountsDto {
 
-    @NotEmpty(message = "AccountNumber can not be a null or empty")
-    @Pattern(regexp = "(^$|[0-9]{10})", message = "AccountNumber must be 10 digits")
     @Schema(
             description = "Account Number of Easy Bank account", example = "1234567890"
     )
@@ -26,7 +23,11 @@ public class AccountsDto {
     @Schema(
             description = "Account type of Easy Bank account", example = "Savings"
     )
+    @NotEmpty(message = "AccountType can not be a null or empty")
     private String accountType;
 
-    //private CustomerDto customer;
+    @Schema(
+            description = "Customer account number", example = "101"
+    )
+    private Long customerAccountNumber;
 }

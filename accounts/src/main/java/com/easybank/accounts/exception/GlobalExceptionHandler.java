@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @ControllerAdvice
-public class GlobalExceptionHandler  extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
@@ -37,6 +37,7 @@ public class GlobalExceptionHandler  extends ResponseEntityExceptionHandler {
 
     /**
      * Handles global error logic inside all the controllers
+     *
      * @param exception
      * @param webRequest
      * @return
@@ -67,13 +68,34 @@ public class GlobalExceptionHandler  extends ResponseEntityExceptionHandler {
 
     /**
      * Handles CustomerAlreadyExistsException
+     *
      * @param exception
      * @param webRequest
      * @return
      */
     @ExceptionHandler(CustomerAlreadyExistsException.class)
     public ResponseEntity<ErrorResponseDto> handleCustomerAlreadyExistsException(CustomerAlreadyExistsException exception,
-                                                                                 WebRequest webRequest){
+                                                                                 WebRequest webRequest) {
+        ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
+                webRequest.getDescription(false),
+                HttpStatus.BAD_REQUEST,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
+    }
+
+
+    /**
+     * Handles AccountAlreadyExistsException
+     *
+     * @param exception
+     * @param webRequest
+     * @return
+     */
+    @ExceptionHandler(AccountAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponseDto> handleAccountAlreadyExistsException(AccountAlreadyExistsException exception,
+                                                                                WebRequest webRequest) {
         ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
                 webRequest.getDescription(false),
                 HttpStatus.BAD_REQUEST,

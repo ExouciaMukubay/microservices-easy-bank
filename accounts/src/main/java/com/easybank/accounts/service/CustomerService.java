@@ -4,7 +4,7 @@ import com.easybank.accounts.dto.CustomerDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface CustomerServiceI {
+public interface CustomerService {
 
     /**
      * @param customerDto - CustomerDto Object

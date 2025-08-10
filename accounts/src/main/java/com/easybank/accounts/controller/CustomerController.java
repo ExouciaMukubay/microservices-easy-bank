@@ -3,11 +3,10 @@ package com.easybank.accounts.controller;
 
 import com.easybank.accounts.dto.CustomerDto;
 import com.easybank.accounts.dto.ResponseDto;
-import com.easybank.accounts.service.CustomerServiceI;
+import com.easybank.accounts.service.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,8 +23,7 @@ import static com.easybank.accounts.constants.ResponseStatus.*;
  * CRUD REST APIs for Accounts in EasyBank to manage account details
  */
 @Tag(
-        name = "CRUD REST APIs for customer in Easy Bank",
-        description = "CRUD REST APIs in Easy Bank to CREATE, UPDATE, FETCH AND DELETE account details"
+        name = "CRUD REST APIs for customer in Easy Bank"
 )
 @RestController
 @RequestMapping(path = "/api/customer", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -33,51 +31,36 @@ import static com.easybank.accounts.constants.ResponseStatus.*;
 @Validated
 public class CustomerController {
 
-    private final CustomerServiceI customerServiceI;
+    private final CustomerService customerService;
 
     @Operation(
-            summary = "Create Account REST API",
-            description = "REST API to create new Customer & new Account. Available account types: Savings, Checking," +
-                    " " +
-                    "Current, Loan"
+            summary = "Create Account Details"
     )
-    /**
-     * Create a new account and return the result of the operation.
-     *
-     * @param customerDto customer details
-     * @return a response with the status of the operation
-     */
     @PostMapping("/create")
     public ResponseEntity<ResponseDto> createAccount(@Valid @RequestBody CustomerDto customerDto) {
-        customerServiceI.createAccount(customerDto);
+        customerService.createAccount(customerDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new ResponseDto(CREATED.getCode(), CREATED.getMessage()));
     }
 
     @Operation(
-            summary = "Fetch Customer Account Details REST API",
-            description = "REST API to fetch Customer &  Account details based on a mobile number"
+            summary = "Fetch Customer Account Details"
     )
-    /**
-     * Retrieve account details based on the customerAccountNumber
-     *
-     * @param mobileNumber the mobile number of the account
-     * @return the account details
-     */
     @GetMapping("/fetch")
-    public ResponseEntity<CustomerDto> fetchCustomerDetails(@RequestParam
-                                                            @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits")
-                                                            Long customerAccountNumber) {
-        var customerDto = customerServiceI.fetchCustomerDetails(customerAccountNumber);
+    public ResponseEntity<CustomerDto> fetchCustomerDetails(@RequestParam Long customerAccountNumber) {
+        var customerDto = customerService.fetchCustomerDetails(customerAccountNumber);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(customerDto);
     }
 
+    @Operation(
+            summary = "Fetch all Customer Account Details REST API"
+    )
     @GetMapping("/all")
     public ResponseEntity<Page<CustomerDto>> getAllCustomers(@RequestParam(required = false) String customerType,
-                                                             @PageableDefault(size = 10) Pageable pageable) {
-        var customers = customerServiceI.getAllCustomers(customerType, pageable);
+                                                             @PageableDefault(size = 10, sort = "surname") Pageable pageable) {
+        var customers = customerService.getAllCustomers(customerType, pageable);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(customers);
     }
@@ -85,12 +68,12 @@ public class CustomerController {
 
     @Operation(
             summary = "Update Customer Account Details REST API",
-            description = "REST API to update Customer &  Account details based on a account number"
+            description = "REST API to update Customer Account details not the account details"
     )
 
     @PutMapping("/update")
     public ResponseEntity<ResponseDto> updateCustomerAccountDetails(@Valid @RequestBody CustomerDto customerDto) {
-        boolean isUpdated = customerServiceI.updateCustomerAccount(customerDto);
+        boolean isUpdated = customerService.updateCustomerAccount(customerDto);
         if (isUpdated) {
             return ResponseEntity
                     .status(HttpStatus.OK)
@@ -104,14 +87,11 @@ public class CustomerController {
 
 
     @Operation(
-            summary = "Delete Account & Customer Details REST API",
-            description = "REST API to delete Customer &  Account details based on a mobile number"
+            summary = "Delete Account & Customer Details REST API"
     )
     @DeleteMapping("/delete")
-    public ResponseEntity<ResponseDto> deleteAccountDetails(@RequestParam
-                                                            @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits")
-                                                            Long customerAccountNumber) {
-        boolean isDeleted = customerServiceI.deleteAccount(customerAccountNumber);
+    public ResponseEntity<ResponseDto> deleteAccountDetails(@RequestParam Long customerAccountNumber) {
+        boolean isDeleted = customerService.deleteAccount(customerAccountNumber);
         if (isDeleted) {
             return ResponseEntity
                     .status(HttpStatus.OK)

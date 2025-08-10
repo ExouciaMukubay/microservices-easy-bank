@@ -7,8 +7,6 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 @Builder
 @Schema(
@@ -52,13 +50,11 @@ public class CustomerDto {
     private String customerType;
 
     @Schema(
-            description = "Address of the customer", example = "Heidelbergerstraße 1, 10117 Belrin"
+            description = "Address of the customer", example = "Heidelbergerstraße 1, 10117 Berlin"
     )
     @NotEmpty(message = "Address can not be a null or empty")
     private String address;
 
-    @Schema(
-            description = "Account(s) details of the Customer"
-    )
-    private List<AccountsDto> accountsDto;
+
+    //  private List<AccountsDto> accountsDto;
 }

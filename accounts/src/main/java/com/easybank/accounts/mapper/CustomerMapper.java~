@@ -73,5 +73,14 @@ public class CustomerMapper {
         if (!customerDto.getAddress().isBlank() && !customerDto.getAddress().equals(customer.getAddress())) {
             customer.setAddress(customerDto.getAddress());
         }
+
+     /*   if (customerDto.getAccountsDto() != null && !customerDto.getAccountsDto().isEmpty()
+                && customerDto.getAccountsDto().size() != customer.getAccounts().size()) {
+            var accounts = customerDto.getAccountsDto()
+                    .stream()
+                    .map(accountsDto -> AccountsMapper.mapSingleAccountsDtoToAccounts(accountsDto, customer))
+                    .collect(Collectors.toList());
+            customer.setAccounts(accounts);
+        }*/
     }
 }

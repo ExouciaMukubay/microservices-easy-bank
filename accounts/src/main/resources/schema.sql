@@ -1,26 +1,38 @@
-CREATE TABLE IF NOT EXISTS `customer` (
-    `customer_id` int AUTO_INCREMENT  PRIMARY KEY,
-    `customer_account_number` int NOT NULL,
-    `surname` varchar(100) NOT NULL,
-    `lastname` varchar(100) NOT NULL,
-    `email` varchar(100) NOT NULL,
-    `mobile_number` varchar(20) NOT NULL,
-    `customer_type` varchar(100) NOT NULL,
-    `address` varchar(255) NOT NULL,
-    `created_at` date NOT NULL,
-    `created_by` varchar(20) NOT NULL,
-    `updated_at` date DEFAULT NULL,
-    `updated_by` varchar(20) DEFAULT NULL
-    );
+-- ----------------------------
+-- Table: customer
+-- ----------------------------
 
-CREATE TABLE IF NOT EXISTS `accounts` (
-    `account_id` int AUTO_INCREMENT PRIMARY KEY,
-    `account_number` int NOT NULL,
-    `account_type` varchar(100) NOT NULL,
-    `customer_id` int NOT NULL,
-    `created_at` date NOT NULL,
-    `created_by` varchar(20) NOT NULL,
-    `updated_at` date DEFAULT NULL,
-    `updated_by` varchar(20) DEFAULT NULL,
-    FOREIGN KEY (customer_id) REFERENCES customer(customer_id) ON DELETE CASCADE
-    );
+CREATE TABLE customer
+(
+    customer_id             BIGSERIAL PRIMARY KEY,
+    customer_account_number BIGINT UNIQUE NOT NULL,
+    surname                 VARCHAR(255),
+    lastname                VARCHAR(255),
+    email                   VARCHAR(255),
+    mobile_number           VARCHAR(50) UNIQUE,
+    customer_type           VARCHAR(50),
+    address                 VARCHAR(255),
+    created_at              TIMESTAMP,
+    created_by              VARCHAR(255),
+    updated_at              TIMESTAMP,
+    updated_by              VARCHAR(255)
+);
+
+-- ----------------------------
+-- Table: accounts
+-- ----------------------------
+
+CREATE TABLE accounts
+(
+    account_id     BIGSERIAL PRIMARY KEY,
+    account_number BIGINT UNIQUE NOT NULL,
+    account_type   VARCHAR(50),
+    customer_id    BIGINT        NOT NULL,
+    created_at     TIMESTAMP,
+    created_by     VARCHAR(255),
+    updated_at     TIMESTAMP,
+    updated_by     VARCHAR(255),
+    CONSTRAINT fk_accounts_customer FOREIGN KEY (customer_id)
+        REFERENCES customer (customer_id)
+        ON DELETE CASCADE
+);

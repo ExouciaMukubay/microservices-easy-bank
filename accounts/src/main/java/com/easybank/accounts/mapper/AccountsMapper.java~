@@ -27,7 +27,6 @@ public class AccountsMapper {
         return AccountsDto.builder()
                 .accountNumber(accounts.getAccountNumber())
                 .accountType(accounts.getAccountType())
-                .customerAccountNumber(accounts.getCustomer().getCustomerAccountNumber())
                 .build();
     }
 

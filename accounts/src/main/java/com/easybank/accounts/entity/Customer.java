@@ -41,5 +41,5 @@ public class Customer extends BaseEntity {
     private String address;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Accounts> accounts; // customer can have multiple accounts
+    private List<Accounts> accounts;
 }

@@ -7,7 +7,7 @@ import com.easybank.accounts.exception.CustomerAlreadyExistsException;
 import com.easybank.accounts.exception.ResourceNotFoundException;
 import com.easybank.accounts.mapper.CustomerMapper;
 import com.easybank.accounts.repository.CustomerRepository;
-import com.easybank.accounts.service.CustomerServiceI;
+import com.easybank.accounts.service.CustomerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class CustomerServiceImpl implements CustomerServiceI {
+public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
 
     @Override
@@ -25,15 +25,13 @@ public class CustomerServiceImpl implements CustomerServiceI {
         var optionalCustomer = customerRepository.findByCustomerAccountNumber(customerDto.getCustomerAccountNumber());
 
         if (optionalCustomer.isPresent()) {
-            throw new CustomerAlreadyExistsException(customerDto.getSurname() + " " + customerDto.getLastname(),
-                    "customerAccountNumber", customerDto.getCustomerAccountNumber().toString());
+            throw new CustomerAlreadyExistsException("customerAccountNumber", customerDto.getCustomerAccountNumber().toString());
         }
 
         var customer = CustomerMapper.mapToCustomer(customerDto);
-
         customerRepository.save(customer);
-        log.info("New Account %s %s %s created successfully", customer.getCustomerAccountNumber(),
-                customer.getSurname(), customer.getLastname());
+
+        log.info("New Account " + customer.getCustomerAccountNumber() + " " + customer.getSurname() + " " + customer.getLastname() + "created successfully");
     }
 
     @Override
@@ -60,6 +58,7 @@ public class CustomerServiceImpl implements CustomerServiceI {
         } else {
             customerPage = customerRepository.findAll(pageable);
         }
+        log.info("Fetched all customer account details successfully");
         return customerPage.map(CustomerMapper::mapToCustomerDto);
     }
 
@@ -67,17 +66,16 @@ public class CustomerServiceImpl implements CustomerServiceI {
     public boolean updateCustomerAccount(CustomerDto customerDto) {
         var optionalCustomer = customerRepository.findByCustomerAccountNumber(customerDto.getCustomerAccountNumber());
 
-        if (!optionalCustomer.isPresent()) {
-            log.error("Customer does not exist");
-            return false;
+        if (optionalCustomer.isEmpty()) {
+            throw new ResourceNotFoundException("Customer", "customerAccountNumber", customerDto.getCustomerAccountNumber().toString());
+
+        } else {
+
+            CustomerMapper.updateCustomerAndMapTopCustomer(customerDto, optionalCustomer.get());
+            customerRepository.save(optionalCustomer.get());
+            log.info("Customer account details updated successfully");
+            return true;
         }
-
-        CustomerMapper.updateCustomerAndMapTopCustomer(customerDto, optionalCustomer.get());
-        customerRepository.save(optionalCustomer.get());
-
-        log.info("Account details updated successfully");
-
-        return true;
     }
 
     @Override
@@ -86,7 +84,9 @@ public class CustomerServiceImpl implements CustomerServiceI {
                 () -> new ResourceNotFoundException("Customer", "customerAccountNumber", customerAccountNumber.toString())
         );
 
-        return customerRepository.deleteByCustomerAccountNumber(customerAccountNumber);
+        var deleted = customerRepository.deleteByCustomerAccountNumber(customerAccountNumber);
+        log.info("Customer account details deleted successfully");
+        return deleted > 0;
     }
 }
 

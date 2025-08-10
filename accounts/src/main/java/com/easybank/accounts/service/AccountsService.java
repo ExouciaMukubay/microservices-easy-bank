@@ -3,7 +3,7 @@ package com.easybank.accounts.service;
 import com.easybank.accounts.dto.AccountsDto;
 
 
-public interface AccountsServiceI {
+public interface AccountsService {
 
     /**
      * Fetchs the account details by account number
@@ -13,7 +13,7 @@ public interface AccountsServiceI {
      */
     AccountsDto fetchAccountDetails(Long accountNumber);
 
-    void createAccount(AccountsDto accountsDto, Long customerAccountNumber);
+    void createAccount(AccountsDto accountsDto);
 
     boolean deleteAccount(Long accountNumber);
 }

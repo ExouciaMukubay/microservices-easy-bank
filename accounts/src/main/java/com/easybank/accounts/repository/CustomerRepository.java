@@ -15,11 +15,11 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     Optional<Customer> findByCustomerAccountNumber(Long customerAccountNumber);
 
-    Page<Customer> findAll(Pageable pageable);
+    // List<Customer> findAll();
 
     Page<Customer> findAllByCustomerType(String customerType, Pageable pageable);
 
     @Transactional
     @Modifying
-    boolean deleteByCustomerAccountNumber(Long customerAccountNumber);
+    int deleteByCustomerAccountNumber(Long customerAccountNumber);
 }

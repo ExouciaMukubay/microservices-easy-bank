@@ -2,7 +2,7 @@ package com.easybank.accounts.controller;
 
 import com.easybank.accounts.dto.AccountsDto;
 import com.easybank.accounts.dto.ResponseDto;
-import com.easybank.accounts.service.AccountsServiceI;
+import com.easybank.accounts.service.AccountsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -18,8 +18,7 @@ import static com.easybank.accounts.constants.ResponseStatus.DELETE_FAILED;
 import static com.easybank.accounts.constants.ResponseStatus.SUCCESS;
 
 @Tag(
-        name = "CRUD REST APIs for Accounts in Easy Bank",
-        description = "CRUD REST APIs in Easy Bank to CREATE, UPDATE, FETCH AND DELETE account details"
+        name = "CRUD REST APIs for accounts in Easy Bank"
 )
 @RestController
 @RequestMapping(path = "/api/accounts", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -27,16 +26,15 @@ import static com.easybank.accounts.constants.ResponseStatus.SUCCESS;
 @Validated
 public class AccountsController {
 
-    private final AccountsServiceI accountsServiceI;
+    private final AccountsService accountsService;
 
     @Operation(
             summary = "Create Account Details REST API",
             description = "REST API to cretae Account details"
     )
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto> createAccount(@Valid @RequestBody AccountsDto accountsDto,
-                                                     @RequestParam Long customerAccountNumber) {
-        accountsServiceI.createAccount(accountsDto, customerAccountNumber);
+    public ResponseEntity<ResponseDto> createAccount(@Valid @RequestBody AccountsDto accountsDto) {
+        accountsService.createAccount(accountsDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new ResponseDto(SUCCESS.getCode(), SUCCESS.getMessage()));
@@ -57,7 +55,7 @@ public class AccountsController {
                                                             @Pattern(regexp = "(^$|[0-9]{10})", message = "Account " +
                                                                     "number must be 10 digits")
                                                             Long accountNumber) {
-        var accountsDto = accountsServiceI.fetchAccountDetails(accountNumber);
+        var accountsDto = accountsService.fetchAccountDetails(accountNumber);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(accountsDto);
     }
@@ -68,7 +66,7 @@ public class AccountsController {
     )
     @DeleteMapping("/delete")
     public ResponseEntity<ResponseDto> deleteAccountDetails(@RequestParam Long accountNumber) {
-        boolean isDeleted = accountsServiceI.deleteAccount(accountNumber);
+        boolean isDeleted = accountsService.deleteAccount(accountNumber);
         if (isDeleted) {
             return ResponseEntity
                     .status(HttpStatus.OK)
